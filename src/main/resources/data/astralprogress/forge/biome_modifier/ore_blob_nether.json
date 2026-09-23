@@ -1,0 +1,6 @@
+{
+    "type": "forge:add_features",
+    "features": "astralprogress:ore_blob_nether",
+    "biomes" : "#minecraft:is_nether",
+    "step": "top_layer_modification"
+}

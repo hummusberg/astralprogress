@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "bucket=1": {
+      "model": "astralprogress:block/cauldron/cauldron_hydrofluoric_acid"
+    },
+    "bucket=2": {
+      "model": "astralprogress:block/cauldron/cauldron_red_acid"
+    },
+    "bucket=3": {
+      "model": "astralprogress:block/cauldron/cauldron_magnetic_iron"
+    }
+  }
+}   

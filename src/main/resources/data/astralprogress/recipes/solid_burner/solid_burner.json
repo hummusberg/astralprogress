@@ -1,0 +1,6 @@
+{
+  "type": "astralprogress:solid_burner",
+  "input": {
+    "tag": "astralprogress:solid_fuels"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:coals",
+
+    {
+      "id": "#forge:coal_coke",
+      "required": false
+    },
+    {
+      "id": "#forge:gems/coal_coke",
+      "required": false
+    },
+    {
+      "id": "#forge:gems/coke",
+      "required": false
+    },
+    {
+      "id": "#forge:gems/charcoal",
+      "required": false
+    },
+    {
+      "id": "#actuallyadditions:tiny_coals",
+      "required": false
+    },
+
+    {
+      "id": "#forge:rods/blaze",
+      "required": false
+    },
+    {
+      "id": "#forge:fuels/bio",
+      "required": false
+    },
+    
+    "#minecraft:logs_that_burn",
+    "#minecraft:planks",
+
+    {
+      "id": "#forge:bitumen",
+      "required": false
+    },
+    {
+      "id": "#forge:tar",
+      "required": false
+    },
+
+    {
+      "id": "projecte:alchemical_coal",
+      "required": false
+    },
+    {
+      "id": "projecte:item.pe_fuel",
+      "required": false
+    },
+    {
+      "id": "projecte:fuel_block",
+      "required": false
+    },
+    {
+      "id": "projecte:aeternalis_fuel",
+      "required": false
+    },
+
+    {
+      "id": "#astralprogress:astral_solid_fuels",
+      "required": false
+    }
+  ]
+}

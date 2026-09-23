@@ -1,0 +1,12 @@
+{
+  "grappling_hook": {
+    "sounds": [
+      "astralprogress:grappling_hook"
+    ]
+  },
+  "gun": {
+    "sounds": [
+      "astralprogress:gun"
+    ]
+  }
+}

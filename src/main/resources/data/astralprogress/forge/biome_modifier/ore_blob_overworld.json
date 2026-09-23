@@ -1,0 +1,6 @@
+{
+    "type": "forge:add_features",
+    "features": "astralprogress:ore_blob_overworld",
+    "biomes" : "#minecraft:is_overworld",
+    "step": "top_layer_modification"
+}

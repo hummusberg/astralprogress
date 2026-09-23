@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "astralprogress:block/kiln_chimney" },
+    "facing=east":  { "model": "astralprogress:block/kiln_chimney", "y": 90 },
+    "facing=south": { "model": "astralprogress:block/kiln_chimney", "y": 180 },
+    "facing=west":  { "model": "astralprogress:block/kiln_chimney", "y": 270 }
+  }
+}

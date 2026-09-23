@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "astralprogress:block/kiln_hearth" },
+    "facing=east":  { "model": "astralprogress:block/kiln_hearth", "y": 90 },
+    "facing=south": { "model": "astralprogress:block/kiln_hearth", "y": 180 },
+    "facing=west":  { "model": "astralprogress:block/kiln_hearth", "y": 270 }
+  }
+}
