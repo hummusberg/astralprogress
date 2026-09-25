@@ -134,7 +134,6 @@ dependencies {
     implementation fg.deobf("curse.maven:jei-238222:8526990")
     implementation fg.deobf("curse.maven:pipez-443900:4916633")
     implementation fg.deobf("curse.maven:jade-324717:8479276")
-    implementation fg.deobf("curse.maven:advanced-xray-256256:4840340")
     implementation fg.deobf("curse.maven:just-enough-resources-jer-240630:5057220")
 
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings

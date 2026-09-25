@@ -1,5 +1,7 @@
 package com.humusberg.astralprogress.recipe;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
@@ -39,14 +41,18 @@ public abstract class AbstractRecipe implements Recipe<SimpleContainer> {
         if(pLevel.isClientSide()) {
             return false;
         }
+        Item[] containerArray = {};
         for (int i = 0; i < pContainer.getContainerSize(); i++) {
-            for (int j = 0; j < inputItems.size(); j++) {
-                if (inputItems.get(j).test(pContainer.getItem(i))) {
-                    return true;
-                } 
+            containerArray = ArrayUtils.add(containerArray, pContainer.getItem(i).getItem());            
+        }
+        for (int i = 0; i < inputItems.size(); i++) {
+            if (!(inputItems.get(i).isEmpty())) {
+                if (!ArrayUtils.contains(containerArray, inputItems.get(i).getItems()[0].getItem())) {
+                    return false;
+                }
             }
         }
-        return false;
+        return true;
 
     }
 
