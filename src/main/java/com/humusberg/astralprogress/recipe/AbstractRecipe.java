@@ -39,12 +39,14 @@ public abstract class AbstractRecipe implements Recipe<SimpleContainer> {
         if(pLevel.isClientSide()) {
             return false;
         }
-        for (int i = 0; i < inputItems.size(); i++) {
-            if (!inputItems.get(i).test(pContainer.getItem(i))) {
-                return false;
+        for (int i = 0; i < pContainer.getContainerSize(); i++) {
+            for (int j = 0; j < inputItems.size(); j++) {
+                if (inputItems.get(j).test(pContainer.getItem(i))) {
+                    return true;
+                } 
             }
         }
-        return true;
+        return false;
 
     }
 
