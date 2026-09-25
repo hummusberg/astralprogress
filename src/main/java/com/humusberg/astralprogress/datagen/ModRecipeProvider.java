@@ -6,6 +6,7 @@ import com.humusberg.astralprogress.AstralProgress;
 import com.humusberg.astralprogress.creativetabs.ModCreativeTabs;
 import com.humusberg.astralprogress.recipe.LatheRecipe;
 import com.humusberg.astralprogress.recipe.MachineRecipeBuilder;
+import com.humusberg.astralprogress.recipe.PressRecipe;
 
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -131,12 +132,11 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
     @SuppressWarnings("removal")
     protected static void makePlate(String material, Consumer<FinishedRecipe> pWriter) {
-        /*
         MachineRecipeBuilder.generic(Ingredient.of(ItemUtil.getItem(material+"_ingot")), ItemUtil.getItem(material+"_plate"), PressRecipe.Serializer.INSTANCE)
             .group("press")
             .unlockedBy(getHasName(Items.AIR), has(Items.AIR))
             .save(pWriter, AstralProgress.MODID + ":" + material + "_press");
-        */
+            
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ItemUtil.getItem(material+"_plate"))
             .pattern("MM")
             .pattern("H ")

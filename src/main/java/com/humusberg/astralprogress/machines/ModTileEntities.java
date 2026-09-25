@@ -15,6 +15,9 @@ public class ModTileEntities {
     public static final RegistryObject<BlockEntityType<LatheTile>> LATHE = TILE_ENTITY_TYPES.register("lathe",
         () -> BlockEntityType.Builder.of(LatheTile::new, ItemUtil.getBlock("lathe")).build(null));
 
+    public static final RegistryObject<BlockEntityType<PressTile>> PRESS = TILE_ENTITY_TYPES.register("press",
+        () -> BlockEntityType.Builder.of(PressTile::new, ItemUtil.getBlock("press")).build(null));
+
     public static final RegistryObject<BlockEntityType<CauldronTile>> CAULDRON = TILE_ENTITY_TYPES.register("cauldron",
         () -> BlockEntityType.Builder.of(CauldronTile::new, ItemUtil.getBlock("cauldron")).build(null));
 

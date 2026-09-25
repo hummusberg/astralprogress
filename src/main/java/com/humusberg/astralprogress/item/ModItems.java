@@ -7,6 +7,7 @@ import com.humusberg.astralprogress.fluid.ModFluidTypes;
 import com.humusberg.astralprogress.fluid.ModFluids;
 import com.humusberg.astralprogress.fluid.RegisterFluids;
 import com.humusberg.astralprogress.machines.Lathe;
+import com.humusberg.astralprogress.machines.Press;
 import com.humusberg.astralprogress.machines.SolidBurner;
 import com.humusberg.astralprogress.machines.BasicBattery;
 import com.humusberg.astralprogress.machines.Cauldron;
@@ -53,6 +54,8 @@ public class ModItems {
         
         BlockRegister.register("lathe", () -> new Lathe(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
         ItemRegister.register("lathe" , () -> new BlockItem(ItemUtil.getBlock("lathe"), new Item.Properties()));
+        BlockRegister.register("press", () -> new Press(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
+        ItemRegister.register("press" , () -> new BlockItem(ItemUtil.getBlock("press"), new Item.Properties()));
         BlockRegister.register("basic_battery", () -> new BasicBattery(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
         ItemRegister.register("basic_battery" , () -> new BlockItem(ItemUtil.getBlock("basic_battery"), new Item.Properties()));
         BlockRegister.register("solid_burner", () -> new SolidBurner(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));

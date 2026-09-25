@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import com.humusberg.astralprogress.machines.LatheTile;
+import com.humusberg.astralprogress.machines.DirectionOutputTile;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -36,13 +36,13 @@ public class AddDirectionToTile {
         Level level = player.level();
         BlockEntity blockEntity = level.getBlockEntity(position);
         Direction direction = Direction.from3DDataValue((int)this.direction);
-        if (!(blockEntity instanceof LatheTile tile)) {
+        if (!(blockEntity instanceof DirectionOutputTile tile)) {
             return;
         }
-        if (ArrayUtils.contains(tile.outputDirection, direction)) {
-            tile.outputDirection = ArrayUtils.remove(tile.outputDirection, ArrayUtils.indexOf(tile.outputDirection, direction));
+        if (ArrayUtils.contains(tile.getOutputDirection(), direction)) {
+            tile.setOutputDirection(ArrayUtils.remove(tile.getOutputDirection(), ArrayUtils.indexOf(tile.getOutputDirection(), direction)));
         } else {
-            tile.outputDirection = ArrayUtils.add(tile.outputDirection, direction);
+            tile.setOutputDirection(ArrayUtils.add(tile.getOutputDirection(), direction));
         }
     }
 }

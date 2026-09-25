@@ -14,6 +14,9 @@ public class ModRecipes {
     public static final RegistryObject<RecipeSerializer<LatheRecipe>> LATHE_SERIALIZER =
         SERIALIZERS.register("lathe", () -> LatheRecipe.Serializer.INSTANCE);
 
+    public static final RegistryObject<RecipeSerializer<PressRecipe>> PRESS_SERIALIZER =
+        SERIALIZERS.register("press", () -> PressRecipe.Serializer.INSTANCE);
+
     public static final RegistryObject<RecipeSerializer<SolidBurnerRecipe>> SOLID_BURNER_SERIALIZER =
         SERIALIZERS.register("solid_burner", () -> SolidBurnerRecipe.Serializer.INSTANCE);
 }

@@ -6,6 +6,7 @@ import com.humusberg.astralprogress.item.TintedBucket;
 import com.humusberg.astralprogress.item.TintedItem;
 import com.humusberg.astralprogress.menu.LatheMenuScreen;
 import com.humusberg.astralprogress.menu.ModMenus;
+import com.humusberg.astralprogress.menu.PressMenuScreen;
 import com.humusberg.astralprogress.menu.SolidBurnerMenuScreen;
 
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -73,6 +74,7 @@ public class ModEvents {
     public static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             MenuScreens.register(ModMenus.LATHE_MENU.get(), LatheMenuScreen::new);
+            MenuScreens.register(ModMenus.PRESS_MENU.get(), PressMenuScreen::new);
             MenuScreens.register(ModMenus.SOLID_BURNER_MENU.get(), SolidBurnerMenuScreen::new);
         });
     }

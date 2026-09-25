@@ -30,6 +30,7 @@ public class ModBlockLootSubProvider extends BlockLootSubProvider {
         this.dropSelf(ItemUtil.getBlock("kiln_hearth"));
         this.dropSelf(ItemUtil.getBlock("kiln_chimney"));
         this.dropSelf(ItemUtil.getBlock("lathe"));
+        this.dropSelf(ItemUtil.getBlock("press"));
         this.dropSelf(ItemUtil.getBlock("solid_burner"));
         this.dropSelf(ItemUtil.getBlock("basic_battery"));
         this.dropSelf(ItemUtil.getBlock("cauldron"));
