@@ -30,6 +30,9 @@ public class ModBlockLootSubProvider extends BlockLootSubProvider {
         this.dropSelf(ItemUtil.getBlock("kiln_hearth"));
         this.dropSelf(ItemUtil.getBlock("kiln_chimney"));
         this.dropSelf(ItemUtil.getBlock("lathe"));
+        this.dropSelf(ItemUtil.getBlock("solid_burner"));
+        this.dropSelf(ItemUtil.getBlock("basic_battery"));
+        this.dropSelf(ItemUtil.getBlock("cauldron"));
         for (int i1 = 0; i1 < ModCreativeTabs.material.length; i1++) {
             if (ModCreativeTabs.material[i1] == "iron") {
                 i1 =+ 2;
