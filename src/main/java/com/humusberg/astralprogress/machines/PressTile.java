@@ -2,7 +2,6 @@ package com.humusberg.astralprogress.machines;
 
 import java.util.Optional;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -273,12 +272,7 @@ public class PressTile extends BlockEntity implements MenuProvider, DirectionOut
         if (pTag.contains("Timer")) {
             timer = pTag.getInt("Timer");
         }
-        if (pTag.contains("Sides")) {
-            int[] intOutputDirections = pTag.getIntArray("Sides");
-            for (int i = 0; i < intOutputDirections.length; i++) {
-                outputDirection = ArrayUtils.add(outputDirection, Direction.from3DDataValue(intOutputDirections[i]));
-            }
-        }
+        loadDirections(pTag);
     }
 
     @Override

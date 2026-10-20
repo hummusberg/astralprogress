@@ -2,14 +2,15 @@ package com.humusberg.astralprogress.machines;
 
 import java.util.Optional;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.humusberg.astralprogress.AstralProgress;
 import com.humusberg.astralprogress.menu.LatheMenu;
 import com.humusberg.astralprogress.recipe.LatheRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 
 import net.minecraft.network.chat.Component;
@@ -21,6 +22,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,13 +33,14 @@ import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class LatheTile extends BlockEntity implements MenuProvider {
+public class LatheTile extends BlockEntity implements MenuProvider, DirectionOutputTile {
+    public Optional<LatheRecipe> recipe;
     public Direction[] outputDirection = {
 
     };
     public Direction[] direction = {};
     public int timer;
-    public int InitialTime;
+    public boolean processingItem = false;
     private final LazyOptional<ItemStackHandler> inventoryOptional = LazyOptional.of(() -> this.itemStackHandler);
 
     private final MachineEnergyStorage energyStorage = new MachineEnergyStorage(5000, 1024, 30, 0);
@@ -144,45 +147,42 @@ public class LatheTile extends BlockEntity implements MenuProvider {
         super(ModTileEntities.LATHE.get(), pPos, pBlockState);
     }
     public static <T extends BlockEntity> void tick(Level pLevel, BlockPos pBlockPos, BlockState pState, T blockEntity) {
+        if (pLevel.isClientSide) {
+            return;
+        }
         if (!(blockEntity instanceof LatheTile tile)) {
             return;
         }
-        if (!pLevel.isClientSide()) {
-            for (int i1 = 0; i1 < tile.outputDirection.length; i1++) {
-                if (pLevel.getBlockEntity(pBlockPos.relative(tile.outputDirection[i1])) != null) {
-                    LazyOptional<IItemHandler> handler = pLevel.getBlockEntity(pBlockPos.relative(tile.outputDirection[i1])).getCapability(
-                        ForgeCapabilities.ITEM_HANDLER,
-                        tile.outputDirection[i1].getOpposite()
-                    );
-                    handler.ifPresent(itemHandler -> {
-                        for (int i = 0; i < tile.itemStackHandler.getSlots(); i++) {
-                            if (!(i >= 3)) {
-                                continue;
-                            };
+        for (int i1 = 0; i1 < tile.outputDirection.length; i1++) {
+            if (pLevel.getBlockEntity(pBlockPos.relative(tile.outputDirection[i1])) != null) {
+                LazyOptional<IItemHandler> handler = pLevel.getBlockEntity(pBlockPos.relative(tile.outputDirection[i1])).getCapability(
+                    ForgeCapabilities.ITEM_HANDLER,
+                    tile.outputDirection[i1].getOpposite()
+                );
+                handler.ifPresent(itemHandler -> {
+                    for (int i = 0; i < tile.itemStackHandler.getSlots(); i++) {
+                        if (!(i >= 3)) {
+                            continue;
+                        };
 
-                            ItemStack fromStack = tile.itemStackHandler.getStackInSlot(i);
-                            if (fromStack.isEmpty()) {
-                                continue;
-                            }
-
-                            for (int j = 0; j < itemHandler.getSlots(); j++) {
-                                if (itemHandler.insertItem(j, fromStack.copyWithCount(1), true).isEmpty()) {
-                                    itemHandler.insertItem(j, fromStack.copyWithCount(1), false);
-                                    fromStack.shrink(1);
-                                    break;
-                                }                                
-                            }
+                        ItemStack fromStack = tile.itemStackHandler.getStackInSlot(i);
+                        if (fromStack.isEmpty()) {
+                            continue;
                         }
-                    });
-                }
-            }
-            tile.InitialTime = tile.timer;
-            processItem(tile);
-            if (tile.InitialTime == tile.timer) {
-                tile.timer = 0;
+
+                        for (int j = 0; j < itemHandler.getSlots(); j++) {
+                            if (itemHandler.insertItem(j, fromStack.copyWithCount(1), true).isEmpty()) {
+                                itemHandler.insertItem(j, fromStack.copyWithCount(1), false);
+                                fromStack.shrink(1);
+                                break;
+                            }                                
+                        }
+                    }
+                });
             }
             tile.direction = tile.outputDirection;
         }
+        processItem(tile);
     }
 
     public static ItemStack getSlot(LatheTile tile, int slot) {
@@ -201,53 +201,53 @@ public class LatheTile extends BlockEntity implements MenuProvider {
         return recipe.isPresent();
     }
     private static void processItem(LatheTile tile) {
-        if (!hasRecipe(tile)) {
+        if (tile.energyStorage.getEnergyStored() < 20) {
             return;
         }
-        if (tile.energyStorage.getEnergyStored() < 30) {
-            return;
-        }
-        Optional<LatheRecipe> recipe = getCurrentRecipe(tile);
-        Item result = recipe.get().getResultItem(null).getItem();
-        int inputSlot = 0;
-        int outputSlot = 3;
-        for (int i = 0; i < 3; i++) {
-            if (recipe.get().getIngredients().get(0).test(getSlot(tile, i))) {
-                inputSlot = i;
-                i = 0;
-                break;
+
+        if (!tile.processingItem) {
+            tile.recipe = getCurrentRecipe(tile);
+            if (!hasRecipe(tile)) {
+                return;
             }
         }
+        
+        NonNullList<Ingredient> ingredients = tile.recipe.get().getIngredients();
+        int outputSlot = 0;
+
         for (int i = 3; i < 6; i++) {
-            if (getSlot(tile, i).is(result) && getSlot(tile, i).getCount() < 64) {
+            if (getSlot(tile, i).is(tile.recipe.get().getResultItem(null).getItem()) && getSlot(tile, i).getCount() < 64) {
                 outputSlot = i;
-                i = 3;
                 break;
             } else if (getSlot(tile, i).is(Items.AIR)) {
                 outputSlot = i;
-                i = 3;
                 break;
+            } else {
+                outputSlot = 0;
             }
         }
-        if (getSlot(tile, outputSlot).is(Items.AIR)) {
-            tile.timer++;
-            tile.energyStorage.consumeEnergy(20);
-            tile.setChanged();
-            if (tile.timer == 60) {
-                setSlot(tile, outputSlot, result);
-                getSlot(tile, inputSlot).shrink(1);
-                tile.timer = 0;
-                tile.setChanged();
+
+        if (!tile.processingItem && outputSlot != 0) {
+            AstralProgress.LOGGER.info("1038 ingredients size is: " + ingredients.size());
+            AstralProgress.LOGGER.info("1038 ingredients is: " + ingredients);
+            for (int i = 0; i < ingredients.size(); i++) {
+                for (int j = 0; j < 3; j++) {
+                    if (getSlot(tile, j).is(ingredients.get(i).getItems()[0].getItem())) {
+                        getSlot(tile, j).shrink(1);
+                        break;
+                    }
+                }
             }
-        } else if (getSlot(tile, outputSlot).is(result) && getSlot(tile, outputSlot).getCount() < 64) {
+            tile.processingItem = true;
+        } 
+        
+        if (tile.processingItem) {
             tile.timer++;
             tile.energyStorage.consumeEnergy(20);
-            tile.setChanged();
-            if (tile.timer == 60) {
-                getSlot(tile, outputSlot).grow(1);
-                getSlot(tile, inputSlot).shrink(1);
+            if (!(tile.timer < 60)) {
+                setSlot(tile, outputSlot, tile.recipe.get().getResultItem(null).getItem());
                 tile.timer = 0;
-                tile.setChanged();
+                tile.processingItem = false;
             }
         }
     }
@@ -273,22 +273,13 @@ public class LatheTile extends BlockEntity implements MenuProvider {
         if (pTag.contains("Timer")) {
             timer = pTag.getInt("Timer");
         }
-        if (pTag.contains("Sides")) {
-            int[] intOutputDirections = pTag.getIntArray("Sides");
-            for (int i = 0; i < intOutputDirections.length; i++) {
-                outputDirection = ArrayUtils.add(outputDirection, Direction.from3DDataValue(intOutputDirections[i]));
-            }
-        }
+        loadDirections(pTag);
     }
 
     @Override
     protected void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);
-        int[] intOutputDirections = {};
-        for (int i = 0; i < outputDirection.length; i++) {
-            intOutputDirections = ArrayUtils.add(intOutputDirections, outputDirection[i].get3DDataValue());
-        }
-        pTag.putIntArray("Sides", intOutputDirections);
+        saveDirections(pTag);
         pTag.putInt("Timer", timer);
         pTag.putInt("Energy", energyStorage.getEnergyStored());
         pTag.put("Inventory", itemStackHandler.serializeNBT());
@@ -301,14 +292,13 @@ public class LatheTile extends BlockEntity implements MenuProvider {
     public Component getDisplayName() {
         return Component.literal("Lathe");
     }
-    public int getOutputArrayAsInt(LatheTile tile) {
-        String arrayAsString = "";
-        for (int i = 0; i < outputDirection.length; i++) {
-            arrayAsString = arrayAsString + Integer.toString(outputDirection[i].get3DDataValue());
-        }
-        if (arrayAsString.isBlank()) {
-            return 6;
-        }
-        return Integer.parseInt(arrayAsString);
+
+    @Override
+    public Direction[] getOutputDirection() {
+        return outputDirection;
+    }
+    @Override
+    public void setOutputDirection(Direction[] directions) {
+        outputDirection = directions.clone();
     }
 }

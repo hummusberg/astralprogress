@@ -45,7 +45,7 @@ public class LatheMenu extends AbstractContainerMenu{
         addDataSlot(new DataSlot() {
             @Override
             public int get() {
-                return tile.getOutputArrayAsInt(tile);
+                return tile.getOutputArrayAsInt();
             }
 
             @Override

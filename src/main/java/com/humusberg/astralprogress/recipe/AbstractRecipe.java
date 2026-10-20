@@ -91,9 +91,8 @@ public abstract class AbstractRecipe implements Recipe<SimpleContainer> {
     @Override
     public abstract RecipeType<?> getType();
 
-    public static class Type implements RecipeType<AbstractRecipe> {
-        public static final Type INSTANCE = new Type();
-        public static final String ID = "example";
+    public abstract static class Type implements RecipeType<AbstractRecipe> {
+
     }
     
     public abstract static class Serializer implements RecipeSerializer<AbstractRecipe> {
