@@ -55,6 +55,8 @@ public class LatheCategory implements IRecipeCategory<LatheRecipe> {
     public void setRecipe(IRecipeLayoutBuilder builder, LatheRecipe recipe, IFocusGroup focuses) {
         builder.addInvisibleIngredients(RecipeIngredientRole.CATALYST).addIngredients(Ingredient.of(ItemUtil.getBlock("lathe")));
         builder.addSlot(RecipeIngredientRole.INPUT, 8, 35).addIngredients(recipe.getIngredients().get(0));
+        builder.addSlot(RecipeIngredientRole.INPUT, 24, 35).addIngredients(recipe.getIngredients().get(1));
+        builder.addSlot(RecipeIngredientRole.INPUT, 40, 35).addIngredients(recipe.getIngredients().get(2));
         builder.addSlot(RecipeIngredientRole.OUTPUT, 116 , 35).addItemStack(recipe.getResultItem(null));
     }
 

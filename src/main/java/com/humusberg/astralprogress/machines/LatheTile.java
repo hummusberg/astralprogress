@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.humusberg.astralprogress.AstralProgress;
 import com.humusberg.astralprogress.menu.LatheMenu;
 import com.humusberg.astralprogress.recipe.LatheRecipe;
 import net.minecraft.core.BlockPos;
@@ -216,7 +215,7 @@ public class LatheTile extends BlockEntity implements MenuProvider, DirectionOut
         int outputSlot = 0;
 
         for (int i = 3; i < 6; i++) {
-            if (getSlot(tile, i).is(tile.recipe.get().getResultItem(null).getItem()) && getSlot(tile, i).getCount() < 64) {
+            if ((getSlot(tile, i).is(tile.recipe.get().getResultItem(null).getItem()) && getSlot(tile, i).getCount() < getSlot(tile, i).getMaxStackSize())) {
                 outputSlot = i;
                 break;
             } else if (getSlot(tile, i).is(Items.AIR)) {
@@ -228,11 +227,9 @@ public class LatheTile extends BlockEntity implements MenuProvider, DirectionOut
         }
 
         if (!tile.processingItem && outputSlot != 0) {
-            AstralProgress.LOGGER.info("1038 ingredients size is: " + ingredients.size());
-            AstralProgress.LOGGER.info("1038 ingredients is: " + ingredients);
             for (int i = 0; i < ingredients.size(); i++) {
                 for (int j = 0; j < 3; j++) {
-                    if (getSlot(tile, j).is(ingredients.get(i).getItems()[0].getItem())) {
+                    if (ingredients.get(i).getItems().length != 0 && getSlot(tile, j).is(ingredients.get(i).getItems()[0].getItem())) {
                         getSlot(tile, j).shrink(1);
                         break;
                     }
@@ -245,7 +242,11 @@ public class LatheTile extends BlockEntity implements MenuProvider, DirectionOut
             tile.timer++;
             tile.energyStorage.consumeEnergy(20);
             if (!(tile.timer < 60)) {
-                setSlot(tile, outputSlot, tile.recipe.get().getResultItem(null).getItem());
+                if ((getSlot(tile, outputSlot).is(tile.recipe.get().getResultItem(null).getItem()))) {
+                    getSlot(tile, outputSlot).grow(1);
+                } else {
+                    setSlot(tile, outputSlot, tile.recipe.get().getResultItem(null).getItem());
+                }
                 tile.timer = 0;
                 tile.processingItem = false;
             }
