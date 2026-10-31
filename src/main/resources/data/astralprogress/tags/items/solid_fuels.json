@@ -2,7 +2,7 @@
   "replace": false,
   "values": [
     "#minecraft:coals",
-
+    "minecraft:coal_block",
     {
       "id": "#forge:coal_coke",
       "required": false

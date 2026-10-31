@@ -42,9 +42,9 @@ public class Lathe extends Block implements EntityBlock {
     @SuppressWarnings("deprecation")
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if (pLevel.getBlockEntity(pPos) instanceof LatheTile blockEntity) {
-            for (int i = 0; i < blockEntity.itemStackHandler.getSlots(); i++) {
-                Block.popResource(pLevel, pPos, LatheTile.getSlot(blockEntity, i));
+        if (pLevel.getBlockEntity(pPos) instanceof LatheTile tile) {
+            for (int i = 0; i < tile.itemStackHandler.getSlots(); i++) {
+                Block.popResource(pLevel, pPos, tile.itemStackHandler.getStackInSlot(i));
             }
         }
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);

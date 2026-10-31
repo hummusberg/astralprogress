@@ -2,8 +2,15 @@ package com.humusberg.astralprogress.machines;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 public interface DirectionOutputTile {
     public Direction[] getOutputDirection();
@@ -34,5 +41,37 @@ public interface DirectionOutputTile {
             return 6;
         }
         return Integer.parseInt(arrayAsString);
+    }
+
+    public default void autoOutput(ItemStackHandler itemStackHandler, Direction[] direction, Direction[] outputDirection, Level pLevel, BlockPos pBlockPos) {
+        for (int i1 = 0; i1 < outputDirection.length; i1++) {
+            if (pLevel.getBlockEntity(pBlockPos.relative(outputDirection[i1])) != null) {
+                LazyOptional<IItemHandler> handler = pLevel.getBlockEntity(pBlockPos.relative(outputDirection[i1])).getCapability(
+                    ForgeCapabilities.ITEM_HANDLER,
+                    outputDirection[i1].getOpposite()
+                );
+                handler.ifPresent(itemHandler -> {
+                    for (int i = 0; i < itemStackHandler.getSlots(); i++) {
+                        if (!(i >= 3)) {
+                            continue;
+                        };
+
+                        ItemStack fromStack = itemStackHandler.getStackInSlot(i);
+                        if (fromStack.isEmpty()) {
+                            continue;
+                        }
+
+                        for (int j = 0; j < itemHandler.getSlots(); j++) {
+                            if (itemHandler.insertItem(j, fromStack.copyWithCount(1), true).isEmpty()) {
+                                itemHandler.insertItem(j, fromStack.copyWithCount(1), false);
+                                fromStack.shrink(1);
+                                break;
+                            }                                
+                        }
+                    }
+                });
+            }
+            direction = outputDirection;
+        }
     }
 }

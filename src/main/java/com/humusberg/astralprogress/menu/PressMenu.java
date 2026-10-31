@@ -97,7 +97,7 @@ public class PressMenu extends AbstractContainerMenu{
         addDataSlot(new DataSlot() {
 			@Override
             public int get() {
-                if (PressTile.getSlot(tile, 0).getItem() != Items.AIR || PressTile.getSlot(tile, 1).getItem() != Items.AIR || PressTile.getSlot(tile, 2).getItem() != Items.AIR) {
+                if (tile.itemStackHandler.getStackInSlot(0).getItem() != Items.AIR || tile.itemStackHandler.getStackInSlot(1).getItem() != Items.AIR || tile.itemStackHandler.getStackInSlot(2).getItem() != Items.AIR) {
                      if (tile.timer == 0) {
                         return 1;
                      }

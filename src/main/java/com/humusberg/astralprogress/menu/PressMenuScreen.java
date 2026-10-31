@@ -75,13 +75,13 @@ public class PressMenuScreen extends AbstractContainerScreen<PressMenu> {
                 .build()
         );
         this.upButton = addWidget(
-            Button.builder(null, button -> handleConfigButton(Direction.UP))
+            Button.builder(null, button -> handleConfigButton(Direction.NORTH))
                 .pos(this.leftPos + 200, this.topPos + 49)
                 .size(12, 12)
                 .build()
         );
         this.downButton = addWidget(
-            Button.builder(null, button -> handleConfigButton(Direction.DOWN))
+            Button.builder(null, button -> handleConfigButton(Direction.SOUTH)) 
                 .pos(this.leftPos + 200, this.topPos + 75)
                 .size(12, 12)
                 .build()
@@ -99,13 +99,13 @@ public class PressMenuScreen extends AbstractContainerScreen<PressMenu> {
                 .build()
         );
         this.frontButton = addWidget(
-            Button.builder(null, button -> handleConfigButton(Direction.NORTH))
+            Button.builder(null, button -> handleConfigButton(Direction.UP))
                 .pos(this.leftPos + 200, this.topPos + 62)
                 .size(10, 9)
                 .build()
         );
         this.backButton = addWidget(
-            Button.builder(null, button -> handleConfigButton(Direction.SOUTH))
+            Button.builder(null, button -> handleConfigButton(Direction.DOWN))
                 .pos(this.leftPos + 213, this.topPos + 75)
                 .size(10, 9)
                 .build()
@@ -136,10 +136,10 @@ public class PressMenuScreen extends AbstractContainerScreen<PressMenu> {
             this.closeConfigButton.active = true;
             for (int i = 0; i < menu.getDirections().length; i++) {
                 switch (menu.getDirections()[i]) {
-                    case UP:
+                    case NORTH:
                         pGuiGraphics.blit(OUTPUT_BUTTON, upButton.getX(), upButton.getY(), 0, 0, this.imageWidth, this.imageHeight);
                         break;
-                    case DOWN:
+                    case SOUTH:
                         pGuiGraphics.blit(OUTPUT_BUTTON, downButton.getX(), downButton.getY(), 0, 0, this.imageWidth, this.imageHeight);
                         break;
                     case WEST:
@@ -148,10 +148,10 @@ public class PressMenuScreen extends AbstractContainerScreen<PressMenu> {
                     case EAST:
                         pGuiGraphics.blit(OUTPUT_BUTTON, rightButton.getX(), rightButton.getY(), 0, 0, this.imageWidth, this.imageHeight);
                         break;
-                    case NORTH:
+                    case UP:
                         pGuiGraphics.blit(OUTPUT_BUTTON, frontButton.getX(), frontButton.getY(), 0, 0, this.imageWidth, this.imageHeight);
                         break;
-                    case SOUTH:
+                    case DOWN:
                         pGuiGraphics.blit(OUTPUT_BUTTON, backButton.getX(), backButton.getY(), 0, 0, this.imageWidth, this.imageHeight);
                         break;
                     default:
