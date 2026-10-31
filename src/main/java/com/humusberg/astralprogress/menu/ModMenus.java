@@ -1,6 +1,10 @@
 package com.humusberg.astralprogress.menu;
 
 import com.humusberg.astralprogress.AstralProgress;
+import com.humusberg.astralprogress.menu.lathe.LatheMenu;
+import com.humusberg.astralprogress.menu.press.PressMenu;
+import com.humusberg.astralprogress.menu.solidBurner.SolidBurnerMenu;
+
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.registries.DeferredRegister;

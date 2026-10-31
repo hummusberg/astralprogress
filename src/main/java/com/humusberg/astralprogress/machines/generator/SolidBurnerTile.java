@@ -1,11 +1,13 @@
-package com.humusberg.astralprogress.machines;
+package com.humusberg.astralprogress.machines.generator;
 
 import java.util.Optional;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.humusberg.astralprogress.menu.SolidBurnerMenu;
+import com.humusberg.astralprogress.machines.GeneratorEnergyStorage;
+import com.humusberg.astralprogress.machines.ModTileEntities;
+import com.humusberg.astralprogress.menu.solidBurner.SolidBurnerMenu;
 import com.humusberg.astralprogress.recipe.SolidBurnerRecipe;
 
 import net.minecraft.core.BlockPos;

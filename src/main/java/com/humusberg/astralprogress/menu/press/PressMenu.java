@@ -1,8 +1,9 @@
-package com.humusberg.astralprogress.menu;
+package com.humusberg.astralprogress.menu.press;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import com.humusberg.astralprogress.machines.PressTile;
+import com.humusberg.astralprogress.machines.press.PressTile;
+import com.humusberg.astralprogress.menu.ModMenus;
 import com.humusberg.astralprogress.util.ItemUtil;
 
 import net.minecraft.core.Direction;

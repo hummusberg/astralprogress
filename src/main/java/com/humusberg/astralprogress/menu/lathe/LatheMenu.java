@@ -1,8 +1,12 @@
-package com.humusberg.astralprogress.menu;
+package com.humusberg.astralprogress.menu.lathe;
 
-import com.humusberg.astralprogress.machines.SolidBurnerTile;
+import org.apache.commons.lang3.ArrayUtils;
+
+import com.humusberg.astralprogress.machines.lathe.LatheTile;
+import com.humusberg.astralprogress.menu.ModMenus;
 import com.humusberg.astralprogress.util.ItemUtil;
 
+import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -15,30 +19,52 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class SolidBurnerMenu extends AbstractContainerMenu {
-    @SuppressWarnings("unused")
-    private final SolidBurnerTile blockEntity;
+public class LatheMenu extends AbstractContainerMenu{
+    private Direction[] empty = {};
+    private Direction[] outputDirection = {};
+    private final LatheTile blockEntity;
     private final ContainerLevelAccess levelAccess;
     private int energyStored;
     private int maxEnergy;
     private int timer;
-    private int burnTime;
     private boolean error;
 
-    public SolidBurnerMenu(int pContainerId, Inventory pInventory, FriendlyByteBuf additionalDataBuf) {
+    public LatheMenu(int pContainerId, Inventory pInventory, FriendlyByteBuf additionalDataBuf) {
         this(pContainerId, pInventory, pInventory.player.level().getBlockEntity(additionalDataBuf.readBlockPos()));
 
     } 
 
-    public SolidBurnerMenu(int pContainerId, Inventory pInventory, BlockEntity pBlockEntity) {
-        super(ModMenus.SOLID_BURNER_MENU.get(), pContainerId);
-        if(pBlockEntity instanceof SolidBurnerTile tile) {
+    public LatheMenu(int pContainerId, Inventory pInventory, BlockEntity pBlockEntity) {
+        super(ModMenus.LATHE_MENU.get(), pContainerId);
+        if(pBlockEntity instanceof LatheTile tile) {
             this.blockEntity = tile;
         } else {
-            throw new IllegalStateException("tile enity is not solid burner");
+            throw new IllegalStateException("tile enity is not lathe");
         }
 
         this.levelAccess = ContainerLevelAccess.create(pBlockEntity.getLevel(), pBlockEntity.getBlockPos());
+        addDataSlot(new DataSlot() {
+            @Override
+            public int get() {
+                return tile.getOutputArrayAsInt();
+            }
+
+            @Override
+            public void set(int pValue) {
+                if (pValue == 6) {
+                    outputDirection = empty;
+                    return;
+                }
+                String stringDirections = Integer.toString(pValue);
+                char[] charDirections = stringDirections.toCharArray();
+                outputDirection = empty;
+                for (int i = 0; i < charDirections.length; i++) {
+                    outputDirection = ArrayUtils.add(outputDirection, Direction.from3DDataValue(((int) charDirections[i])));
+                }
+
+            }
+            
+        });
         addDataSlot(new DataSlot() {
             @Override
             public int get() {
@@ -70,20 +96,9 @@ public class SolidBurnerMenu extends AbstractContainerMenu {
             }
         });
         addDataSlot(new DataSlot() {
-            @Override
-            public int get() {
-                return tile.burnTime;
-            }
-            @Override
-            public void set(int value) {
-                burnTime = value;
-            }
-        });
-        
-        addDataSlot(new DataSlot() {
 			@Override
             public int get() {
-                if (SolidBurnerTile.getSlot(tile, 0).getItem() != Items.AIR) {
+                if (tile.itemStackHandler.getStackInSlot(0).getItem() != Items.AIR || tile.itemStackHandler.getStackInSlot(1).getItem() != Items.AIR || tile.itemStackHandler.getStackInSlot(2).getItem() != Items.AIR) {
                      if (tile.timer == 0) {
                         return 1;
                      }
@@ -100,7 +115,7 @@ public class SolidBurnerMenu extends AbstractContainerMenu {
                 
             }
         });
-
+        
         createPlayerHotbar(pInventory);
         createPlayerInventory(pInventory);
         createBlockEntityInventory(tile);
@@ -115,15 +130,20 @@ public class SolidBurnerMenu extends AbstractContainerMenu {
     public int getTimer() {
         return timer;
     }
-    public int getBurnTime() {
-        return burnTime;
-    }
     public boolean getError() {
         return error;
     }
-    private void createBlockEntityInventory(SolidBurnerTile tile) {
-        tile.getInventoryOptional().ifPresent(itemStackHandler -> {
-            addSlot(new SlotItemHandler(itemStackHandler, 0 , 79 , 31));
+    public Direction[] getDirections() {
+        return outputDirection;
+    }
+    private void createBlockEntityInventory(LatheTile tile) {
+        tile.getInventoryOptional().ifPresent(inputStackHandler -> {
+            addSlot(new SlotItemHandler(inputStackHandler, 0 , 17 , 26));
+            addSlot(new SlotItemHandler(inputStackHandler, 1 , 35 , 26));
+            addSlot(new SlotItemHandler(inputStackHandler, 2 , 53 , 26));
+            addSlot(new SlotItemHandler(inputStackHandler, 3 , 107 , 26));
+            addSlot(new SlotItemHandler(inputStackHandler, 4 , 125 , 26));
+            addSlot(new SlotItemHandler(inputStackHandler, 5 , 143 , 26));
         });
     }
 
@@ -160,7 +180,7 @@ public class SolidBurnerMenu extends AbstractContainerMenu {
                 return ItemStack.EMPTY;
             }
         } else {
-            if(!moveItemStackTo(fromStack, 36, 37, false)) {
+            if(!moveItemStackTo(fromStack, 36, 39, false)) {
                 return ItemStack.EMPTY;
             }
         }
@@ -172,7 +192,11 @@ public class SolidBurnerMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player pPlayer) {
-        return stillValid(this.levelAccess, pPlayer, ItemUtil.getBlock("solid_burner"));
+        return stillValid(this.levelAccess, pPlayer, ItemUtil.getBlock("lathe"));
 
+    }
+    
+    public LatheTile getBlockEntity() {
+        return this.blockEntity;
     }
 }

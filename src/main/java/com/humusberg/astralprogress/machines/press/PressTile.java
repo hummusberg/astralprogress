@@ -1,9 +1,11 @@
-package com.humusberg.astralprogress.machines;
+package com.humusberg.astralprogress.machines.press;
 
 import java.util.Optional;
 
-import com.humusberg.astralprogress.menu.LatheMenu;
-import com.humusberg.astralprogress.recipe.LatheRecipe;
+import com.humusberg.astralprogress.machines.AbstractMachineTile;
+import com.humusberg.astralprogress.machines.ModTileEntities;
+import com.humusberg.astralprogress.menu.press.PressMenu;
+import com.humusberg.astralprogress.recipe.PressRecipe;
 import net.minecraft.core.BlockPos;
 
 import net.minecraft.network.chat.Component;
@@ -17,26 +19,27 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class LatheTile extends AbstractMachineTile implements MenuProvider {
+public class PressTile extends AbstractMachineTile implements MenuProvider {
     @SuppressWarnings("rawtypes")
     public static Optional<Recipe> recipe;
 
-    public LatheTile(BlockPos pPos, BlockState pBlockState) {
-        super(ModTileEntities.LATHE.get(), pPos, pBlockState, recipe);
+    public PressTile(BlockPos pPos, BlockState pBlockState) {
+        super(ModTileEntities.PRESS.get(), pPos, pBlockState, recipe);
     }
     public static <T extends BlockEntity> void tick(Level pLevel, BlockPos pBlockPos, BlockState pState, T blockEntity) {
         if (pLevel.isClientSide) {
             return;
         }
-        if (!(blockEntity instanceof LatheTile tile)) {
+        if (!(blockEntity instanceof PressTile tile)) {
             return;
         }
         tile.autoOutput(tile.itemStackHandler, tile.direction, tile.outputDirection, pLevel, pBlockPos);
         tile.processItem();
     }
 
-    boolean hasRecipe() {
-        Optional<LatheRecipe> recipe = getCurrentRecipe();
+    @Override
+    public boolean hasRecipe() {
+        Optional<PressRecipe> recipe = getCurrentRecipe();
 
         if (recipe.isEmpty()) {
             return false;
@@ -45,24 +48,22 @@ public class LatheTile extends AbstractMachineTile implements MenuProvider {
         return recipe.isPresent();
     }
 
-
-
     @Override
-    Optional<LatheRecipe> getCurrentRecipe() {
+    public Optional<PressRecipe> getCurrentRecipe() {
         SimpleContainer inventory = new SimpleContainer(itemStackHandler.getSlots());
         for (int i = 0; i < itemStackHandler.getSlots(); i++) {
             inventory.setItem(i, itemStackHandler.getStackInSlot(i));
         }
 
-        return level.getRecipeManager().getRecipeFor(LatheRecipe.Type.INSTANCE, inventory, level);
+        return level.getRecipeManager().getRecipeFor(PressRecipe.Type.INSTANCE, inventory, level);
     }
 
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return new LatheMenu(pContainerId, pPlayerInventory, this);
+        return new PressMenu(pContainerId, pPlayerInventory, this);
     }
     @Override
     public Component getDisplayName() {
-        return Component.literal("Lathe");
+        return Component.literal("Press");
     }
 }

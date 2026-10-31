@@ -1,4 +1,6 @@
-package com.humusberg.astralprogress.machines;
+package com.humusberg.astralprogress.machines.battery;
+
+import com.humusberg.astralprogress.machines.ModTileEntities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;

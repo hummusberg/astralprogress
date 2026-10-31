@@ -1,7 +1,7 @@
 package com.humusberg.astralprogress.item;
 
-import com.humusberg.astralprogress.machines.Cauldron;
-import com.humusberg.astralprogress.machines.CauldronTile;
+import com.humusberg.astralprogress.machines.cauldron.Cauldron;
+import com.humusberg.astralprogress.machines.cauldron.CauldronTile;
 import com.humusberg.astralprogress.util.ItemUtil;
 import com.humusberg.astralprogress.util.Raycasts;
 

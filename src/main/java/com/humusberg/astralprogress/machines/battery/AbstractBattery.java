@@ -1,8 +1,10 @@
-package com.humusberg.astralprogress.machines;
+package com.humusberg.astralprogress.machines.battery;
 
 import javax.annotation.Nullable;
 
 import org.jetbrains.annotations.NotNull;
+
+import com.humusberg.astralprogress.machines.BatteryEnergyStorage;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

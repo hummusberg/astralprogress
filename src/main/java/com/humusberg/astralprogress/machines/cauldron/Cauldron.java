@@ -1,5 +1,6 @@
-package com.humusberg.astralprogress.machines;
+package com.humusberg.astralprogress.machines.cauldron;
 
+import com.humusberg.astralprogress.machines.ModTileEntities;
 import com.humusberg.astralprogress.util.ItemUtil;
 
 import net.minecraft.core.BlockPos;

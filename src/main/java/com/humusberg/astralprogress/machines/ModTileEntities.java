@@ -1,6 +1,11 @@
 package com.humusberg.astralprogress.machines;
 
 import com.humusberg.astralprogress.AstralProgress;
+import com.humusberg.astralprogress.machines.battery.BasicBatteryTile;
+import com.humusberg.astralprogress.machines.cauldron.CauldronTile;
+import com.humusberg.astralprogress.machines.generator.SolidBurnerTile;
+import com.humusberg.astralprogress.machines.lathe.LatheTile;
+import com.humusberg.astralprogress.machines.press.PressTile;
 import com.humusberg.astralprogress.util.ItemUtil;
 
 import net.minecraft.world.level.block.entity.BlockEntityType;

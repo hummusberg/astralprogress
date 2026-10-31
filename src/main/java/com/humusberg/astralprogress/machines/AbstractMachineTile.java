@@ -25,7 +25,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public abstract class AbstractMachineTile extends BlockEntity implements DirectionOutputTile{
     @SuppressWarnings("rawtypes")
-    Optional<Recipe> recipe;
+    public Optional<Recipe> recipe;
 
     public AbstractMachineTile(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState, @SuppressWarnings("rawtypes") Optional<Recipe> recipe) {
         super(pType, pPos, pBlockState);
@@ -33,10 +33,10 @@ public abstract class AbstractMachineTile extends BlockEntity implements Directi
     }
 
     @SuppressWarnings("rawtypes")
-    abstract Optional getCurrentRecipe();
-    abstract boolean hasRecipe();
+    public abstract Optional getCurrentRecipe();
+    public abstract boolean hasRecipe();
     @SuppressWarnings("unchecked")
-    void processItem() {
+    public void processItem() {
         if (energyStorage.getEnergyStored() < 20) {
             return;
         }

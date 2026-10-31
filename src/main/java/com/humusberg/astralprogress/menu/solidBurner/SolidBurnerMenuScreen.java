@@ -1,4 +1,4 @@
-package com.humusberg.astralprogress.menu;
+package com.humusberg.astralprogress.menu.solidBurner;
 
 import java.util.List;
 

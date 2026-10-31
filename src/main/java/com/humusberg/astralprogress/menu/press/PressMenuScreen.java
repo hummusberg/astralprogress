@@ -1,4 +1,4 @@
-package com.humusberg.astralprogress.menu;
+package com.humusberg.astralprogress.menu.press;
 
 import java.util.List;
 

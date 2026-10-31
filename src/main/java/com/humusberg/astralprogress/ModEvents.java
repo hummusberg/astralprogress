@@ -4,10 +4,10 @@ import com.humusberg.astralprogress.block.TintedBlock;
 import com.humusberg.astralprogress.item.ModItems;
 import com.humusberg.astralprogress.item.TintedBucket;
 import com.humusberg.astralprogress.item.TintedItem;
-import com.humusberg.astralprogress.menu.LatheMenuScreen;
 import com.humusberg.astralprogress.menu.ModMenus;
-import com.humusberg.astralprogress.menu.PressMenuScreen;
-import com.humusberg.astralprogress.menu.SolidBurnerMenuScreen;
+import com.humusberg.astralprogress.menu.lathe.LatheMenuScreen;
+import com.humusberg.astralprogress.menu.press.PressMenuScreen;
+import com.humusberg.astralprogress.menu.solidBurner.SolidBurnerMenuScreen;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.BlockItem;
