@@ -29,6 +29,7 @@ LICENSE.txt
 README.txt
 CREDITS.txt
 .vscode
+.vim
 run-data
 *kate-swp
 src/generated
