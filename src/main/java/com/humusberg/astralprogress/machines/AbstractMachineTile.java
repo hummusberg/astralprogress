@@ -24,36 +24,41 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 public abstract class AbstractMachineTile extends BlockEntity implements DirectionOutputTile{
-    @SuppressWarnings("rawtypes")
-    public Optional<Recipe> recipe;
+    public Optional<? extends Recipe<?>> recipe;
 
-    public AbstractMachineTile(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState, @SuppressWarnings("rawtypes") Optional<Recipe> recipe) {
+    int capacity;
+    int transferRate;
+
+    public AbstractMachineTile(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState, Optional<? extends Recipe<?>> recipe, int capacity, int transferRate) {
         super(pType, pPos, pBlockState);
-        this.recipe = recipe;
+        this.capacity = capacity;
+	this.transferRate = transferRate;
+	this.recipe = recipe;
     }
-
-    @SuppressWarnings("rawtypes")
-    public abstract Optional getCurrentRecipe();
+    public abstract Optional<? extends Recipe<?>> getCurrentRecipe();
     public abstract boolean hasRecipe();
-    @SuppressWarnings("unchecked")
+    ItemStack resultItem = ItemStack.EMPTY;
+    NonNullList<Ingredient> ingredients;
+
     public void processItem() {
         if (energyStorage.getEnergyStored() < 20) {
             return;
         }
 
         if (!processingItem) {
-            recipe = getCurrentRecipe();
-            if (!hasRecipe()) {
+	    if (!hasRecipe()) {
                 return;
             }
+            recipe = getCurrentRecipe();
+            ingredients = recipe.get().getIngredients();
+	    resultItem = recipe.get().getResultItem(null);
         }
         
-        NonNullList<Ingredient> ingredients = recipe.get().getIngredients();
-        int outputSlot = 0;
+	int outputSlot = 0;
         
         //Find Output Slot
         for (int i = 3; i < 6; i++) {
-            if (canInsert(recipe.get().getResultItem(null), itemStackHandler.getStackInSlot(i))) {
+            if (canInsert(resultItem, itemStackHandler.getStackInSlot(i))) {
                 outputSlot = i;
                 break;
             } else {
@@ -79,10 +84,10 @@ public abstract class AbstractMachineTile extends BlockEntity implements Directi
             timer++;
             energyStorage.consumeEnergy(20);
             if (timer >= 60) {
-                if ((itemStackHandler.getStackInSlot(outputSlot).is(recipe.get().getResultItem(null).getItem()))) {
+                if ((itemStackHandler.getStackInSlot(outputSlot).is(resultItem.getItem()))) {
                     itemStackHandler.getStackInSlot(outputSlot).grow(1);
                 } else {
-                    itemStackHandler.setStackInSlot(outputSlot, new ItemStack(recipe.get().getResultItem(null).getItem()));
+                    itemStackHandler.setStackInSlot(outputSlot, new ItemStack(resultItem.getItem()));
                 }
                 timer = 0;
                 processingItem = false;
@@ -106,7 +111,7 @@ public abstract class AbstractMachineTile extends BlockEntity implements Directi
     public boolean processingItem = false;
     public final LazyOptional<ItemStackHandler> inventoryOptional = LazyOptional.of(() -> this.itemStackHandler);
 
-    public final MachineEnergyStorage energyStorage = new MachineEnergyStorage(5000, 1024, 1024, 0);
+    public final MachineEnergyStorage energyStorage = new MachineEnergyStorage(capacity, transferRate, transferRate, 0);
 
     public final LazyOptional<EnergyStorage> energyOptional = LazyOptional.of(() -> this.energyStorage);
 
@@ -219,6 +224,15 @@ public abstract class AbstractMachineTile extends BlockEntity implements Directi
         if (pTag.contains("Timer")) {
             timer = pTag.getInt("Timer");
         }
+
+        if (pTag.contains("Result")) {
+            resultItem = ItemStack.of(pTag.getCompound("Result"));
+        }
+
+	if (pTag.contains("Processing")) {
+	    processingItem = pTag.getBoolean("Processing");
+	}
+
         loadDirections(pTag);
     }
 
@@ -229,6 +243,10 @@ public abstract class AbstractMachineTile extends BlockEntity implements Directi
         pTag.putInt("Timer", timer);
         pTag.putInt("Energy", energyStorage.getEnergyStored());
         pTag.put("Inventory", itemStackHandler.serializeNBT());
+	if (resultItem != null) {
+	    pTag.put("Result", resultItem.serializeNBT());
+	}
+	pTag.putBoolean("Processing", processingItem);
     }
 
     @Override

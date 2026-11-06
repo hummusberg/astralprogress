@@ -20,11 +20,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class LatheTile extends AbstractMachineTile implements MenuProvider {
-    @SuppressWarnings("rawtypes")
-    public static Optional<Recipe> recipe;
+    public static Optional<? extends Recipe<?>> recipe;
 
     public LatheTile(BlockPos pPos, BlockState pBlockState) {
-        super(ModTileEntities.LATHE.get(), pPos, pBlockState, recipe);
+        super(ModTileEntities.LATHE.get(), pPos, pBlockState, recipe, 3000, 1024);
     }
     public static <T extends BlockEntity> void tick(Level pLevel, BlockPos pBlockPos, BlockState pState, T blockEntity) {
         if (pLevel.isClientSide) {
