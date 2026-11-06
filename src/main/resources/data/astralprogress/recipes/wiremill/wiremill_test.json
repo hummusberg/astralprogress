@@ -1,0 +1,13 @@
+{
+  "type": "astralprogress:wiremill",
+  "ingredients": [
+    {
+      "item": "minecraft:copper_ingot"
+    },
+    [],
+    []
+  ],
+  "output": {
+    "item": "astralprogress:copper_wire"
+  }
+}

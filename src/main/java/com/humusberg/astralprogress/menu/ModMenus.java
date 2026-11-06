@@ -4,6 +4,7 @@ import com.humusberg.astralprogress.AstralProgress;
 import com.humusberg.astralprogress.menu.lathe.LatheMenu;
 import com.humusberg.astralprogress.menu.press.PressMenu;
 import com.humusberg.astralprogress.menu.solidBurner.SolidBurnerMenu;
+import com.humusberg.astralprogress.menu.wiremill.WiremillMenu;
 
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
@@ -17,6 +18,9 @@ public class ModMenus {
 
     public static final RegistryObject<MenuType<LatheMenu>> LATHE_MENU =
         MENU_TYPES.register("lathe_menu", () -> IForgeMenuType.create(LatheMenu::new));
+
+    public static final RegistryObject<MenuType<WiremillMenu>> WIREMILL_MENU =
+        MENU_TYPES.register("wiremill_menu", () -> IForgeMenuType.create(WiremillMenu::new));
 
     public static final RegistryObject<MenuType<PressMenu>> PRESS_MENU =
         MENU_TYPES.register("press_menu", () -> IForgeMenuType.create(PressMenu::new));

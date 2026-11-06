@@ -11,6 +11,7 @@ import com.humusberg.astralprogress.machines.cauldron.Cauldron;
 import com.humusberg.astralprogress.machines.generator.SolidBurner;
 import com.humusberg.astralprogress.machines.lathe.Lathe;
 import com.humusberg.astralprogress.machines.press.Press;
+import com.humusberg.astralprogress.machines.wiremill.Wiremill;
 import com.humusberg.astralprogress.util.ItemUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -56,6 +57,8 @@ public class ModItems {
         ItemRegister.register("lathe" , () -> new BlockItem(ItemUtil.getBlock("lathe"), new Item.Properties()));
         BlockRegister.register("press", () -> new Press(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
         ItemRegister.register("press" , () -> new BlockItem(ItemUtil.getBlock("press"), new Item.Properties()));
+        BlockRegister.register("wiremill", () -> new Wiremill(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
+        ItemRegister.register("wiremill" , () -> new BlockItem(ItemUtil.getBlock("wiremill"), new Item.Properties()));
         BlockRegister.register("basic_battery", () -> new BasicBattery(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
         ItemRegister.register("basic_battery" , () -> new BlockItem(ItemUtil.getBlock("basic_battery"), new Item.Properties()));
         BlockRegister.register("solid_burner", () -> new SolidBurner(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));

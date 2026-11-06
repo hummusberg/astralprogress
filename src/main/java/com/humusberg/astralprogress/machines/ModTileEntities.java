@@ -6,6 +6,7 @@ import com.humusberg.astralprogress.machines.cauldron.CauldronTile;
 import com.humusberg.astralprogress.machines.generator.SolidBurnerTile;
 import com.humusberg.astralprogress.machines.lathe.LatheTile;
 import com.humusberg.astralprogress.machines.press.PressTile;
+import com.humusberg.astralprogress.machines.wiremill.WiremillTile;
 import com.humusberg.astralprogress.util.ItemUtil;
 
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -22,6 +23,9 @@ public class ModTileEntities {
 
     public static final RegistryObject<BlockEntityType<PressTile>> PRESS = TILE_ENTITY_TYPES.register("press",
         () -> BlockEntityType.Builder.of(PressTile::new, ItemUtil.getBlock("press")).build(null));
+
+    public static final RegistryObject<BlockEntityType<WiremillTile>> WIREMILL = TILE_ENTITY_TYPES.register("wiremill",
+        () -> BlockEntityType.Builder.of(WiremillTile::new, ItemUtil.getBlock("wiremill")).build(null));
 
     public static final RegistryObject<BlockEntityType<CauldronTile>> CAULDRON = TILE_ENTITY_TYPES.register("cauldron",
         () -> BlockEntityType.Builder.of(CauldronTile::new, ItemUtil.getBlock("cauldron")).build(null));

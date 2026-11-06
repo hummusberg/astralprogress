@@ -5,6 +5,7 @@ import java.util.List;
 import com.humusberg.astralprogress.AstralProgress;
 import com.humusberg.astralprogress.recipe.LatheRecipe;
 import com.humusberg.astralprogress.recipe.PressRecipe;
+import com.humusberg.astralprogress.recipe.WiremillRecipe;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -27,6 +28,7 @@ public class JEIPlugin implements IModPlugin{
     public void registerCategories(IRecipeCategoryRegistration registration) {
         registration.addRecipeCategories(new LatheCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new PressCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new WiremillCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -38,5 +40,8 @@ public class JEIPlugin implements IModPlugin{
 
         List<PressRecipe> pressRecipes = recipeManager.getAllRecipesFor(PressRecipe.Type.INSTANCE);
         registration.addRecipes(PressCategory.PRESS_RECIPE_TYPE, pressRecipes);
+
+        List<WiremillRecipe> wiremillRecipes = recipeManager.getAllRecipesFor(WiremillRecipe.Type.INSTANCE);
+        registration.addRecipes(WiremillCategory.WIREMILL_RECIPE_TYPE, wiremillRecipes);
     }  
 }

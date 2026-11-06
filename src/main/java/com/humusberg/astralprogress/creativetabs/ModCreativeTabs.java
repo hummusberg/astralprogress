@@ -95,6 +95,7 @@ public class ModCreativeTabs {
         "basic_battery",
         "press",
         "lathe",
+        "wiremill",
         "solid_burner",
         "kiln_hearth",
         "kiln_chimney",
