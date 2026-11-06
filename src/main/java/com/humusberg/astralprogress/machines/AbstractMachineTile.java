@@ -28,12 +28,15 @@ public abstract class AbstractMachineTile extends BlockEntity implements Directi
 
     int capacity;
     int transferRate;
+    
+    public MachineEnergyStorage energyStorage = null; 
 
     public AbstractMachineTile(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState, Optional<? extends Recipe<?>> recipe, int capacity, int transferRate) {
         super(pType, pPos, pBlockState);
         this.capacity = capacity;
 	this.transferRate = transferRate;
 	this.recipe = recipe;
+	this.energyStorage = new MachineEnergyStorage(capacity, transferRate, transferRate, 0);
     }
     public abstract Optional<? extends Recipe<?>> getCurrentRecipe();
     public abstract boolean hasRecipe();
@@ -110,8 +113,6 @@ public abstract class AbstractMachineTile extends BlockEntity implements Directi
     public int timer;
     public boolean processingItem = false;
     public final LazyOptional<ItemStackHandler> inventoryOptional = LazyOptional.of(() -> this.itemStackHandler);
-
-    public final MachineEnergyStorage energyStorage = new MachineEnergyStorage(capacity, transferRate, transferRate, 0);
 
     public final LazyOptional<EnergyStorage> energyOptional = LazyOptional.of(() -> this.energyStorage);
 
